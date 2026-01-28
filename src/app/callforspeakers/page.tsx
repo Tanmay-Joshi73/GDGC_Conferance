@@ -1,94 +1,200 @@
+'use client';
+
+import { useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
+import { FiMic, FiAward, FiUsers, FiGlobe, FiArrowRight, FiCpu, FiCode, FiSmartphone, FiCloud } from 'react-icons/fi';
+
 export default function CallForSpeakers() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
+
+  const benefits = [
+    { icon: FiUsers, title: "Global Reach", desc: "Connect with 500+ developers from around the world." },
+    { icon: FiAward, title: "Recognition", desc: "Establish yourself as a thought leader in the tech community." },
+    { icon: FiGlobe, title: "Networking", desc: "Access exclusive speakers dinner and VIP networking events." },
+  ];
+
+  const tracks = [
+    { icon: FiCpu, title: "AI & ML", color: "text-blue-500", bg: "bg-blue-50" },
+    { icon: FiCode, title: "Web", color: "text-red-500", bg: "bg-red-50" },
+    { icon: FiSmartphone, title: "Mobile", color: "text-yellow-500", bg: "bg-yellow-50" },
+    { icon: FiCloud, title: "Cloud", color: "text-green-500", bg: "bg-green-50" },
+  ];
+
   return (
-    <section id="call-for-speakers" className="relative py-20 md:py-32 bg-white overflow-hidden">
-      <div className="absolute inset-0 opacity-5"
-        style={{
-          backgroundImage: `linear-gradient(90deg, transparent 95%, #4285F4 100%),
-                              linear-gradient(180deg, transparent 95%, #DB4437 100%)`,
-          backgroundSize: '80px 80px',
-        }}
-      />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Left side - Title and Subtitle */}
-          <div className="relative z-10">
-            <h2 className="text-5xl md:text-6xl font-bold text-green-600 mb-4">
-              Call for
-              <br />
-              Speakers
-            </h2>
-            <p className="text-xl text-gray-800 font-medium">
-              Join the WOW revolution.
-            </p>
+    <section ref={containerRef} id="call-for-speakers" className="relative py-24 md:py-32 bg-[#fafafa] overflow-hidden">
+
+      {/* Dynamic Background Mesh (Clean Grid) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)',
+            backgroundSize: '40px 40px'
+          }}
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+
+          {/* Left Column: Content */}
+          <div className="space-y-8">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <motion.div
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-100 to-pink-100 px-4 py-2 rounded-full mb-6"
+                whileHover={{ scale: 1.05 }}
+              >
+                <span className="animate-pulse w-2 h-2 bg-purple-600 rounded-full"></span>
+                <span className="text-sm font-bold text-purple-700 uppercase tracking-wider">Call for Proposals Open</span>
+              </motion.div>
+
+              <h2 className="text-6xl md:text-7xl font-black tracking-tighter mb-6 leading-tight">
+                YOUR VOICE <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">
+                  MATTERS
+                </span>
+              </h2>
+
+              <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
+                Share your extraordinary journey. We are looking for passionate speakers to inspire the next generation of innovators.
+              </p>
+            </motion.div>
+
+            {/* Benefits Grid */}
+            <div className="grid sm:grid-cols-3 gap-4">
+              {benefits.map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center mb-3">
+                    <item.icon className="text-xl text-gray-700" />
+                  </div>
+                  <h4 className="font-bold text-gray-900 mb-1">{item.title}</h4>
+                  {/* <p className="text-xs text-gray-500">{item.desc}</p> */}
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="relative group bg-gray-900 text-white text-lg font-bold py-5 px-10 rounded-full overflow-hidden shadow-2xl"
+            >
+              <span className="relative z-10 flex items-center gap-3">
+                Submit Your Proposal
+                <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </motion.button>
           </div>
 
-          {/* Right side - Main content with decorative shapes */}
-          <div className="relative">
-            {/* Decorative shapes background */}
-            {/* Green Plus - Top Right */}
-            <div className="absolute top-0 right-0 transform translate-x-12 -translate-y-12">
-              <svg width="140" height="140" viewBox="0 0 140 140" className="text-green-600">
-                <g>
-                  {/* 3D effect */}
-                  <path
-                    d="M 40 30 L 100 30 L 100 60 L 70 60 L 70 100 L 100 100 L 100 130 L 40 130 L 40 100 L 10 100 L 10 60 L 40 60 Z"
-                    fill="currentColor"
-                    opacity="0.8"
-                  />
-                  <path
-                    d="M 45 35 L 95 35 L 95 55 L 65 55 L 65 95 L 95 95 L 95 125 L 45 125 L 45 95 L 15 95 L 15 55 L 45 55 Z"
-                    fill="currentColor"
-                  />
-                </g>
-              </svg>
-            </div>
+          {/* Right Column: 3D Visual */}
+          <div className="relative h-[600px] flex items-center justify-center">
+            {/* Rotating Rings Background */}
+            {/* @ts-ignore */}
+            <motion.div
+              className="absolute inset-0 border-[1px] border-gray-200 rounded-full"
+              style={{ rotate: y, scale: 0.8 }}
+            />
+            {/* @ts-ignore */}
+            <motion.div
+              className="absolute inset-0 border-[1px] border-gray-200 rounded-full m-12"
+              style={{ rotate: y, scale: 0.6 }}
+            />
 
-            {/* Pink Plus - Bottom Left */}
-            <div className="absolute bottom-0 left-0 transform -translate-x-8 translate-y-20">
-              <svg width="120" height="120" viewBox="0 0 120 120" className="text-pink-500">
-                <g>
-                  <path
-                    d="M 35 20 L 85 20 L 85 45 L 60 45 L 60 85 L 85 85 L 85 110 L 35 110 L 35 85 L 10 85 L 10 45 L 35 45 Z"
-                    fill="#8B1D5F"
-                    opacity="0.6"
-                  />
-                  <path
-                    d="M 35 25 L 85 25 L 85 50 L 60 50 L 60 85 L 85 85 L 85 110 L 35 110 L 35 85 L 10 85 L 10 50 L 35 50 Z"
-                    fill="currentColor"
-                  />
-                </g>
-              </svg>
-            </div>
+            {/* Floating Cards (Orbiting) */}
+            {tracks.map((track, i) => (
+              <motion.div
+                key={i}
+                className={`absolute bg-white p-4 rounded-2xl shadow-xl flex items-center gap-3 border border-gray-100 z-20`}
+                animate={{
+                  y: [0, -20, 0],
+                  rotate: [0, 5, -5, 0]
+                }}
+                transition={{
+                  duration: 4 + i,
+                  repeat: Infinity,
+                  delay: i * 0.5,
+                  ease: "easeInOut"
+                }}
+                style={{
+                  top: `${20 + i * 15}%`,
+                  left: i % 2 === 0 ? '-10%' : '60%',
+                }}
+              >
+                <div className={`p-2 rounded-lg ${track.bg}`}>
+                  <track.icon className={`text-xl ${track.color}`} />
+                </div>
+                <span className="font-bold text-gray-800">{track.title}</span>
+              </motion.div>
+            ))}
 
-            {/* Cyan Shapes - Bottom Right */}
-            <div className="absolute bottom-0 right-0 transform translate-x-8 translate-y-12">
-              <div className="flex gap-2 transform -rotate-12">
-                <div className="w-16 h-20 bg-cyan-500 rounded-lg shadow-lg transform -rotate-6"></div>
-                <div className="w-16 h-20 bg-cyan-600 rounded-lg shadow-lg transform rotate-6 translate-y-4"></div>
-              </div>
-            </div>
+            {/* Central 3D Mic Element */}
+            <motion.div
+              className="relative z-10 w-64 h-64 bg-gradient-to-br from-gray-900 to-gray-800 rounded-[3rem] flex items-center justify-center shadow-2xl"
+              animate={{
+                y: [0, -30, 0],
+                rotateY: [0, 10, -10, 0],
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              style={{
+                perspective: 1000,
+                transformStyle: "preserve-3d"
+              }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-3xl -z-10" />
 
-            {/* Main Content Box */}
-            <div className="relative z-20 bg-gradient-to-br from-blue-50 to-white rounded-2xl p-8 md:p-12 border-2 border-blue-100 shadow-lg">
-              <div className="text-center">
-                <h3 className="text-4xl md:text-5xl font-bold mb-6">
-                  <span className="text-pink-600">Your Voice</span>
-                  <span className="text-gray-800"> </span>
-                  <span className="text-purple-600">Matters</span>
-                </h3>
+              {/* Mic Icon */}
+              <motion.div
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <FiMic className="text-8xl text-white/90 drop-shadow-lg" />
+              </motion.div>
 
-                <p className="text-gray-700 text-lg leading-relaxed mb-8 max-w-xl mx-auto">
-                  Share your extraordinary journey and inspire the next generation of innovators. Your unique perspective could spark the next technological revolution.
-                </p>
+              {/* Sound Waves */}
+              {[...Array(3)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute inset-0 border-2 border-white/10 rounded-[3rem]"
+                  animate={{
+                    scale: [1, 1.5],
+                    opacity: [0.5, 0],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    delay: i * 0.6,
+                    ease: "easeOut"
+                  }}
+                />
+              ))}
+            </motion.div>
 
-                <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full transition-colors shadow-md text-lg">
-                  Proposal Submission are Open
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
